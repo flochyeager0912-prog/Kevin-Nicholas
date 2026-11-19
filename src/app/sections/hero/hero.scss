@@ -1,18 +1,5 @@
-.hero {
-  display: flex;
-  align-items: center;
-  min-height: 100vh;
-  min-height: 100svh;
-  padding-top: calc(var(--header-h) + var(--space-6));
-  padding-bottom: var(--space-7);
-}
-
-.layout {
-  display: grid;
-  grid-template-columns: minmax(0, 600px) 1fr;
-}
-
 .intro {
+  max-width: 560px;
   animation: rise 1s var(--ease-out) both;
 }
 
@@ -42,8 +29,8 @@
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
-  // Keeps descenders from being clipped by background-clip.
-  padding-bottom: 0.06em;
+  text-shadow: none; // text-shadow would show through the clipped gradient
+  padding-bottom: 0.06em; // keeps descenders clear of background-clip
 }
 
 .role {
@@ -63,7 +50,7 @@
 
 .summary {
   margin-top: var(--space-5);
-  max-width: 52ch;
+  max-width: 50ch;
   color: var(--text-2);
   font-size: 1.0625rem;
 }
@@ -96,15 +83,24 @@
 }
 
 .hint {
-  margin-top: var(--space-6);
+  margin-top: var(--space-7);
   padding-top: var(--space-4);
   border-top: 1px solid var(--line);
   font-size: 0.6875rem;
+  line-height: 1.7;
 }
 
-@media (max-width: 880px) {
-  .layout {
-    grid-template-columns: minmax(0, 1fr);
+.hint-narrow {
+  display: none;
+}
+
+@media (max-width: 1099px) {
+  .hint-wide {
+    display: none;
+  }
+
+  .hint-narrow {
+    display: inline;
   }
 }
 
@@ -121,9 +117,7 @@
   .sep {
     display: none;
   }
-}
 
-@media (max-width: 420px) {
   .cta .btn {
     flex: 1 1 100%;
   }

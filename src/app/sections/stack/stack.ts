@@ -1,6 +1,8 @@
-import { ChangeDetectionStrategy, Component, ElementRef, computed, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject } from '@angular/core';
 import { STACK_COPY, STACK_LAYERS } from '../../core/data/profile.data';
+import { SceneStateService } from '../../core/services/scene-state.service';
 import { RevealDirective } from '../../shared/reveal.directive';
+import { handleTablistKey } from '../../shared/roving';
 import { SectionHeading } from '../../shared/section-heading';
 
 @Component({
@@ -13,32 +15,20 @@ import { SectionHeading } from '../../shared/section-heading';
 export class Stack {
   protected readonly copy = STACK_COPY;
   protected readonly layers = STACK_LAYERS;
-  protected readonly index = signal(0);
+  protected readonly index = inject(SceneStateService).layer;
   protected readonly active = computed(() => this.layers[this.index()]);
 
-  private readonly host = inject<ElementRef<HTMLElement>>(ElementRef).nativeElement;
-
-  protected select(i: number): void {
-    this.index.set(i);
+  protected num(i: number): string {
+    return String(i + 1).padStart(2, '0');
   }
 
-  /** Arrow-key navigation across the layer tabs (WAI-ARIA tabs pattern). */
   protected onKeydown(event: KeyboardEvent): void {
-    const n = this.layers.length;
-    const i = this.index();
-    const next =
-      event.key === 'ArrowRight' || event.key === 'ArrowDown'
-        ? (i + 1) % n
-        : event.key === 'ArrowLeft' || event.key === 'ArrowUp'
-          ? (i - 1 + n) % n
-          : event.key === 'Home'
-            ? 0
-            : event.key === 'End'
-              ? n - 1
-              : -1;
-    if (next < 0) return;
-    event.preventDefault();
-    this.index.set(next);
-    this.host.querySelector<HTMLButtonElement>(`#layer-tab-${next}`)?.focus();
+    handleTablistKey(
+      event,
+      this.index(),
+      this.layers.length,
+      (i) => this.index.set(i),
+      (i) => `layer-tab-${i}`,
+    );
   }
 }

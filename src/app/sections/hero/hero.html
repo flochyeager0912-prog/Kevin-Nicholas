@@ -1,6 +1,6 @@
-<section id="hero" class="hero" aria-labelledby="hero-name">
-  <div class="container layout">
-    <div class="card card-pad intro">
+<section id="hero" class="chapter" aria-labelledby="hero-name">
+  <div class="container">
+    <div class="chapter-content intro">
       <p class="eyebrow">
         @for (part of identity.eyebrow; track part; let last = $last) {
           <span>{{ part }}</span>
@@ -10,14 +10,14 @@
         }
       </p>
 
-      <h1 id="hero-name" class="name">{{ identity.name }}</h1>
+      <h1 id="hero-name" class="name">{{ identity.displayName }}</h1>
 
       <p class="role">{{ identity.role }}</p>
       <p class="tagline">{{ identity.tagline }}</p>
       <p class="summary">{{ identity.summary }}</p>
 
       <div class="cta">
-        <a class="btn btn-primary" href="#work">
+        <a class="btn btn-primary" href="#work" (click)="sectionNav.navigate($event, 'work')">
           Explore my work
           <app-icon name="arrowDown" />
         </a>
@@ -44,7 +44,10 @@
         </li>
       </ul>
 
-      <p class="hint mono-label" aria-hidden="true">Scroll — follow the data</p>
+      <p class="hint mono-label" aria-hidden="true">
+        <span class="hint-wide">Drag the scene to orbit · click objects to explore · scroll to follow the data</span>
+        <span class="hint-narrow">Scroll to follow the data</span>
+      </p>
     </div>
   </div>
 </section>

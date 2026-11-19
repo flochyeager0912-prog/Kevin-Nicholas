@@ -1,5 +1,6 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { IDENTITY } from '../../core/data/profile.data';
+import { SectionNavService } from '../../core/services/section-nav.service';
 import { Icon } from '../../shared/icon';
 
 @Component({
@@ -11,4 +12,5 @@ import { Icon } from '../../shared/icon';
 })
 export class Hero {
   protected readonly identity = IDENTITY;
+  protected readonly sectionNav = inject(SectionNavService);
 }

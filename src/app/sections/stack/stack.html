@@ -1,6 +1,6 @@
-<section id="stack" class="section" aria-labelledby="stack-title">
+<section id="stack" class="chapter" aria-labelledby="stack-title">
   <div class="container">
-    <div class="card card-pad" appReveal>
+    <div class="chapter-content" appReveal>
       <app-section-heading
         [eyebrow]="copy.eyebrow"
         [heading]="copy.heading"
@@ -8,55 +8,40 @@
         headingId="stack-title"
       />
 
-      <div class="explorer">
-        <div class="tabs" role="tablist" aria-label="Data stack layers" (keydown)="onKeydown($event)">
-          @for (layer of layers; track layer.id; let i = $index) {
-            <button
-              type="button"
-              role="tab"
-              class="tab"
-              [id]="'layer-tab-' + i"
-              [class.is-active]="i === index()"
-              [attr.aria-selected]="i === index()"
-              aria-controls="layer-panel"
-              [attr.tabindex]="i === index() ? 0 : -1"
-              (click)="select(i)"
-            >
-              <span class="tab-num">{{ (i + 1).toString().padStart(2, '0') }}</span>
-              <span class="tab-name">{{ layer.name }}</span>
-            </button>
+      <div class="option-list layers" role="tablist" aria-label="Data stack layers" (keydown)="onKeydown($event)">
+        @for (layer of layers; track layer.id; let i = $index) {
+          <button
+            type="button"
+            role="tab"
+            class="option"
+            [id]="'layer-tab-' + i"
+            [class.is-active]="i === index()"
+            [attr.aria-selected]="i === index()"
+            aria-controls="layer-panel"
+            [attr.tabindex]="i === index() ? 0 : -1"
+            (click)="index.set(i)"
+          >
+            <span class="option-key">{{ num(i) }}</span>
+            <span class="option-text">{{ layer.name }}</span>
+          </button>
+        }
+      </div>
+
+      <div id="layer-panel" class="panel detail" role="tabpanel" [attr.aria-labelledby]="'layer-tab-' + index()">
+        @for (layer of [active()]; track layer?.id) {
+          @if (layer) {
+            <div class="panel-enter">
+              <p class="mono-label">Layer {{ num(index()) }} / {{ num(layers.length - 1) }}</p>
+              <h3 class="title">{{ layer.name }}</h3>
+              <p class="summary">{{ layer.summary }}</p>
+              <ul class="tag-list">
+                @for (item of layer.items; track item) {
+                  <li class="tag">{{ item }}</li>
+                }
+              </ul>
+            </div>
           }
-        </div>
-
-        <div class="detail">
-          <!-- Stacked-slab diagram: the active layer lifts and glows. -->
-          <div class="slabs" aria-hidden="true">
-            @for (layer of layers; track layer.id; let i = $index) {
-              <span
-                class="slab"
-                [class.is-active]="i === index()"
-                [style.--i]="i"
-                (click)="select(i)"
-              ></span>
-            }
-          </div>
-
-          <div id="layer-panel" class="panel" role="tabpanel" [attr.aria-labelledby]="'layer-tab-' + index()">
-            <!-- Tracking by id re-creates the panel on change so the swap animation replays. -->
-            @for (layer of [active()]; track layer.id) {
-              <div class="panel-inner">
-                <p class="mono-label">Layer {{ index() + 1 }} / {{ layers.length }}</p>
-                <h3 class="panel-title">{{ layer.name }}</h3>
-                <p class="panel-summary">{{ layer.summary }}</p>
-                <ul class="tag-list">
-                  @for (item of layer.items; track item) {
-                    <li class="tag">{{ item }}</li>
-                  }
-                </ul>
-              </div>
-            }
-          </div>
-        </div>
+        }
       </div>
     </div>
   </div>

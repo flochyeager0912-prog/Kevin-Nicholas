@@ -21,7 +21,10 @@ export interface ExternalLink {
 
 export interface Identity {
   readonly name: string;
-  readonly shortName: string;
+  /** Wordmark in the header. */
+  readonly brand: string;
+  /** Name in the main hero heading (without the initial). */
+  readonly displayName: string;
   readonly role: string;
   readonly eyebrow: readonly string[];
   readonly tagline: string;
@@ -42,6 +45,8 @@ export interface RoleStep {
 
 export interface TimelineEntry {
   readonly kind: 'work' | 'education';
+  /** Short label for the 3D journey station. */
+  readonly station: string;
   readonly org: string;
   readonly unit?: string;
   readonly location: string;
@@ -49,7 +54,6 @@ export interface TimelineEntry {
   readonly period: string;
   readonly current?: boolean;
   readonly progression?: readonly RoleStep[];
-  readonly facts?: readonly string[];
   readonly points: readonly string[];
 }
 
@@ -82,7 +86,8 @@ export interface Project {
   readonly highlights: readonly { readonly label: string; readonly text: string }[];
   readonly tech: readonly string[];
   readonly repo: ExternalLink;
-  readonly note?: string;
+  /** Optional live deployment. */
+  readonly live?: ExternalLink;
 }
 
 export interface SectionCopy {

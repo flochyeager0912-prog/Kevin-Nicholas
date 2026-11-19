@@ -1,34 +1,52 @@
-<section id="work" class="section" aria-labelledby="work-title">
+<section id="work" class="chapter" aria-labelledby="work-title">
   <div class="container">
-    <div class="card intro" appReveal>
+    <div class="chapter-content" appReveal>
       <app-section-heading
         [eyebrow]="copy.eyebrow"
         [heading]="copy.heading"
         [lead]="copy.lead"
         headingId="work-title"
       />
-    </div>
 
-    <div class="projects">
-      @for (project of projects; track project.id) {
-        <article class="card card-pad project" [attr.aria-labelledby]="project.id + '-name'" appReveal>
-          <header class="head">
-            <div>
-              <p class="mono-label kicker">{{ project.kicker }}</p>
-              <h3 class="name" [id]="project.id + '-name'">{{ project.name }}</h3>
-            </div>
-            <span class="period">{{ project.period }}</span>
-          </header>
+      <div class="switch" role="tablist" aria-label="Projects" (keydown)="onKeydown($event)">
+        @for (p of projects; track p.id; let i = $index) {
+          <button
+            type="button"
+            role="tab"
+            class="switch-btn"
+            [id]="'project-tab-' + i"
+            [class.is-active]="i === state.project()"
+            [attr.aria-selected]="i === state.project()"
+            aria-controls="project-panel"
+            [attr.tabindex]="i === state.project() ? 0 : -1"
+            (click)="state.selectProject(i)"
+          >
+            {{ p.name }}
+          </button>
+        }
+      </div>
 
-          <div class="body">
-            <div class="main">
-              <p class="summary">{{ project.summary }}</p>
-              <app-flow-stepper class="flow" [steps]="project.flow" [title]="project.flowTitle" [uid]="project.id" />
-            </div>
+      <div id="project-panel" role="tabpanel" [attr.aria-labelledby]="'project-tab-' + state.project()">
+        @for (p of [project()]; track p?.id) {
+          @if (p) {
+            <article class="project panel-enter" [attr.aria-labelledby]="p.id + '-name'">
+              <div class="head">
+                <p class="mono-label kicker">{{ p.kicker }}</p>
+                <span class="period">{{ p.period }}</span>
+              </div>
+              <h3 class="name" [id]="p.id + '-name'">{{ p.name }}</h3>
+              <p class="summary">{{ p.summary }}</p>
 
-            <aside class="side" [attr.aria-label]="project.name + ' details'">
+              <app-flow-stepper
+                class="flow"
+                [steps]="p.flow"
+                [title]="p.flowTitle"
+                [uid]="p.id"
+                [(index)]="state.step"
+              />
+
               <dl class="highlights">
-                @for (h of project.highlights; track h.label) {
+                @for (h of p.highlights; track h.label) {
                   <div class="hl">
                     <dt class="mono-label">{{ h.label }}</dt>
                     <dd>{{ h.text }}</dd>
@@ -36,24 +54,30 @@
                 }
               </dl>
 
-              <div class="tech">
-                <p class="mono-label">Built with</p>
-                <ul class="tag-list">
-                  @for (t of project.tech; track t) {
-                    <li class="tag">{{ t }}</li>
-                  }
-                </ul>
-              </div>
+              <p class="mono-label built">Built with</p>
+              <ul class="tag-list">
+                @for (t of p.tech; track t) {
+                  <li class="tag">{{ t }}</li>
+                }
+              </ul>
 
-              <a class="btn repo" [href]="project.repo.href" target="_blank" rel="noopener noreferrer">
-                <app-icon name="github" />
-                <span class="repo-label">{{ project.repo.label }}</span>
-                <app-icon name="external" />
-              </a>
-            </aside>
-          </div>
-        </article>
-      }
+              <div class="links">
+                <a class="btn link" [href]="p.repo.href" target="_blank" rel="noopener noreferrer">
+                  <app-icon name="github" />
+                  <span class="link-label">Source code</span>
+                  <app-icon name="external" />
+                </a>
+                @if (p.live) {
+                  <a class="btn btn-primary link" [href]="p.live.href" target="_blank" rel="noopener noreferrer">
+                    <span class="link-label">Live site</span>
+                    <app-icon name="external" />
+                  </a>
+                }
+              </div>
+            </article>
+          }
+        }
+      </div>
     </div>
   </div>
 </section>

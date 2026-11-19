@@ -34,7 +34,7 @@ changes never need template edits.
 |---|---|
 | Name, role, summary, email, phone, links | `IDENTITY` |
 | About text | `ABOUT` |
-| Experience & education timeline | `TIMELINE` |
+| Experience & education (chronological; `station` = 3D label) | `TIMELINE` |
 | Data-stack layers and skills | `STACK_LAYERS` |
 | Projects (steps, highlights, tech, repo) | `PROJECTS` |
 | Languages | `LANGUAGES` |
@@ -53,33 +53,43 @@ src/
   app/
     core/models/               Content interfaces
     core/data/                 All profile content
-    core/services/             Active-section tracking, reduced-motion preference
-    shared/                    Icon set, section heading, reveal directive, pipeline stepper
+    core/services/             Active section, reduced motion, shared 3D selection state
+    shared/                    Icon set, section heading, reveal directive, pipeline stepper, keyboard helpers
     layout/                    Header, footer, pipeline-stage rail
     sections/                  Hero, Journey, Data Stack, Work, Resume, Contact
-    scene/                     3D backdrop: Angular host + framework-free three.js engine
+    scene/                     Interactive 3D world: Angular host + framework-free three.js engine
 ```
 
-## The 3D scene
+## The interactive 3D experience
 
-`src/app/scene/data-scene.engine.ts` renders one zone per page section, and the camera glides
-between them as you scroll:
+The site is one continuous 3D world (`src/app/scene/data-scene.engine.ts`). Each page chapter has
+its own exhibit, and the camera flies between them as you scroll. It holds still while you read a
+chapter, and only moves near chapter boundaries.
 
-| Section | Stage | Scene zone |
-|---|---|---|
-| Hero | Source | Source tables orbiting a database core |
-| Journey | Ingest | ETL particle streams flowing into the database |
-| Data Stack | Store | A live bar-chart "data surface" |
-| Work | Transform | Schema / ER graph with signals along relationships |
-| Resume | Model | 3D scatter plot of clusters with k-means centroids |
-| Contact | Serve | Wide shot of the whole pipeline |
+| Chapter | Pipeline stage | 3D exhibit | Interaction |
+|---|---|---|---|
+| Hero | Source | Database core fed by orbiting source tables via ETL particle streams | Drag to orbit |
+| Journey | Ingest | Pipeline track with one station per milestone; the current role pulses | Click a station |
+| Data Stack | Store | The database opened up: one platter per layer, foundation at the bottom | Click a platter |
+| Work | Transform | The selected project's steps as pipeline nodes, over a schema graph | Click a node |
+| Resume | Model | 3D scatter plot with k-means centroids | Click to re-cluster |
+| Contact | Serve | Wide shot of the whole platform | Drag to orbit |
 
-Performance and accessibility:
-- three.js is lazy-loaded after first render (initial bundle ≈ 54 kB gzipped).
-- The animation pauses when the tab is hidden.
-- Pixel ratio is capped, and particle counts drop on small screens.
-- With `prefers-reduced-motion`, the scene renders as a still image.
-- Without WebGL, the page falls back to a CSS gradient.
+How it fits together:
+- **Single source of truth.** Exhibits are built from `profile.data.ts`, so stations, layers and
+  project steps always match the text.
+- **Two-way sync.** `SceneStateService` holds the selected station, layer, project and step.
+  Clicking in 3D updates the page, and selecting in the page updates the 3D.
+- **Crisp text.** Labels in the 3D scene are real HTML elements positioned from projected 3D points.
+  Nothing is rendered as WebGL text.
+- **Layout.** At 1100px and wider, text sits on the left and the exhibit on the right
+  (camera view offset). Below that, the 3D becomes a backdrop and the page lists drive selection.
+- **Performance.** three.js is lazy-loaded after first render (initial bundle about 55 kB gzipped).
+  There is no per-frame allocation. The pixel ratio is capped, particle counts drop on small screens,
+  and rendering pauses when the tab is hidden.
+- **Accessibility.** Every 3D interaction has a keyboard-operable HTML equivalent (ARIA tabs with
+  arrow keys). With `prefers-reduced-motion`, animation freezes but interaction still works.
+  Without WebGL, the page still works completely.
 
 ## Privacy
 

@@ -2,7 +2,7 @@
   <div class="container bar">
     <a class="brand" href="#hero" (click)="menuOpen.set(false)">
       <span class="pulse" aria-hidden="true"></span>
-      <span>{{ identity.shortName }}</span>
+      <span class="brand-name">{{ identity.brand }}</span>
       <span class="visually-hidden">— back to top</span>
     </a>
 
@@ -14,7 +14,7 @@
               [href]="'#' + link.id"
               [class.is-active]="active() === link.id"
               [attr.aria-current]="active() === link.id ? 'true' : null"
-              (click)="menuOpen.set(false)"
+              (click)="navigate($event, link.id)"
               >{{ link.nav }}</a
             >
           </li>

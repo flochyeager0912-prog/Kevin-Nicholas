@@ -50,7 +50,8 @@ button {
   font: inherit;
 }
 
-ul[role='list'] {
+ul[role='list'],
+ol[role='list'] {
   list-style: none;
   padding: 0;
 }
@@ -129,23 +130,177 @@ p {
   padding-inline: var(--gutter);
 }
 
-.section {
+// A chapter is a full-viewport section: text column on the left, the 3D exhibit
+// on the right. Empty areas let the pointer through to the 3D scene.
+.chapter {
   position: relative;
-  padding-block: var(--space-8);
+  display: flex;
+  align-items: center;
+  min-height: 100vh;
+  min-height: 100svh;
+  padding-block: calc(var(--header-h) + var(--space-7)) var(--space-8);
+  pointer-events: none;
 }
 
-.card {
-  position: relative;
-  border: 1px solid var(--line);
-  border-radius: var(--radius-lg);
-  background: var(--surface);
-  box-shadow: var(--shadow-card);
-  backdrop-filter: blur(18px) saturate(140%);
-  -webkit-backdrop-filter: blur(18px) saturate(140%);
+.chapter-content {
+  width: 100%;
+  max-width: var(--column);
+  pointer-events: auto;
+  text-shadow: 0 1px 14px rgba(10, 6, 20, 0.65);
 }
 
-.card-pad {
-  padding: clamp(var(--space-5), 3.4vw, var(--space-7));
+@media (max-width: 1099px) {
+  .chapter {
+    min-height: auto;
+    padding-block: calc(var(--header-h) + var(--space-6)) var(--space-6);
+  }
+
+  .chapter-content {
+    max-width: 680px;
+  }
+}
+
+// Subtle glass panel for detail areas (no heavy borders).
+.panel {
+  padding: var(--space-4) var(--space-5);
+  border-left: 2px solid var(--accent-strong);
+  border-radius: 0 var(--radius-md) var(--radius-md) 0;
+  background: linear-gradient(90deg, rgba(109, 63, 224, 0.16), rgba(20, 12, 38, 0.35));
+}
+
+.panel-enter {
+  animation: panel-enter 420ms var(--ease-out);
+}
+
+@keyframes panel-enter {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+}
+
+// ---------- Selectable option lists (tabs synced with the 3D scene) ----------
+
+.option-list {
+  display: grid;
+  gap: var(--space-1);
+}
+
+.option {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: center;
+  column-gap: var(--space-3);
+  width: 100%;
+  min-height: 44px;
+  padding: var(--space-2) var(--space-3);
+  border: 0;
+  border-left: 2px solid var(--line);
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  background: transparent;
+  color: var(--text-2);
+  text-align: left;
+  cursor: pointer;
+  transition:
+    background 220ms ease,
+    border-color 220ms ease,
+    color 220ms ease;
+
+  &:hover {
+    border-left-color: var(--line-strong);
+    background: rgba(155, 107, 255, 0.08);
+    color: var(--text-1);
+  }
+
+  &.is-active {
+    border-left-color: var(--accent);
+    background: linear-gradient(90deg, rgba(155, 107, 255, 0.22), rgba(155, 107, 255, 0));
+    color: var(--text-1);
+  }
+}
+
+.option-key {
+  color: var(--accent);
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+}
+
+.option-text {
+  font-weight: 600;
+  line-height: 1.35;
+}
+
+.option-sub {
+  display: block;
+  color: var(--text-3);
+  font-size: 0.8125rem;
+  font-weight: 400;
+}
+
+// ---------- 3D scene labels (created by the scene engine) ----------
+
+.scene-labels {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.scene-label {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: inline-flex;
+  align-items: baseline;
+  gap: var(--space-2);
+  padding: 6px 12px;
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius-pill);
+  background: rgba(14, 9, 28, 0.86);
+  color: var(--text-2);
+  font: 500 0.8125rem/1.2 var(--font-body);
+  white-space: nowrap;
+  cursor: pointer;
+  will-change: transform, opacity;
+  transition:
+    background 220ms ease,
+    border-color 220ms ease,
+    color 220ms ease;
+
+  &[data-align='above'] {
+    translate: -50% -100%;
+  }
+
+  &[data-align='right'] {
+    translate: 0 -50%;
+  }
+
+  &:hover {
+    border-color: var(--accent);
+    color: var(--text-1);
+  }
+
+  &.is-active {
+    border-color: var(--accent);
+    background: rgba(109, 63, 224, 0.62);
+    color: var(--text-1);
+  }
+}
+
+.scene-label__sub {
+  color: var(--accent);
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+}
+
+.scene-label.is-active .scene-label__sub {
+  color: var(--text-1);
+}
+
+@media (max-width: 1099px) {
+  .scene-labels {
+    display: none;
+  }
 }
 
 // ---------- Controls ----------

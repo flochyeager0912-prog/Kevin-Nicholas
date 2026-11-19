@@ -1,10 +1,6 @@
-.section {
-  padding-bottom: var(--space-9);
-}
-
 .channels {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: minmax(0, 1fr);
   gap: var(--space-3);
   margin-top: var(--space-6);
 }
@@ -14,7 +10,7 @@
   display: flex;
   border: 1px solid var(--line);
   border-radius: var(--radius-md);
-  background: var(--surface-2);
+  background: rgba(20, 12, 38, 0.6);
   transition:
     border-color 220ms ease,
     background 220ms ease,
@@ -62,6 +58,7 @@
 
 .channel-value {
   color: var(--text-1);
+  font-size: clamp(0.875rem, 0.6rem + 1.4vw, 1rem); // keeps a full email on one line on phones
   font-weight: 600;
   line-height: 1.4;
   overflow-wrap: anywhere;
@@ -96,8 +93,3 @@
   color: var(--text-3);
 }
 
-@media (max-width: 640px) {
-  .channels {
-    grid-template-columns: minmax(0, 1fr);
-  }
-}

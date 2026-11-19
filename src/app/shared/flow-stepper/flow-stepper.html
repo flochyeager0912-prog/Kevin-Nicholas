@@ -25,14 +25,19 @@
 </div>
 
 <div
-  class="panel"
+  class="panel detail"
   role="tabpanel"
   [id]="uid() + '-panel'"
   [attr.aria-labelledby]="uid() + '-tab-' + index()"
   aria-live="polite"
 >
-  @if (active(); as step) {
-    <p class="panel-label">{{ step.label }}</p>
-    <p class="panel-detail">{{ step.detail }}</p>
+  <!-- Tracking by label re-creates the content so the entrance animation replays. -->
+  @for (step of [active()]; track step?.label) {
+    @if (step) {
+      <div class="panel-enter">
+        <p class="panel-label">{{ step.label }}</p>
+        <p class="panel-detail">{{ step.detail }}</p>
+      </div>
+    }
   }
 </div>

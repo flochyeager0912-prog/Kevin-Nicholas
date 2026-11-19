@@ -3,9 +3,9 @@ import { SECTIONS } from '../core/data/profile.data';
 import { ActiveSectionService } from '../core/services/active-section.service';
 
 /**
- * Fixed vertical rail on the right edge: shows which data-pipeline stage
- * the current section maps to. Only rendered on wide screens where it
- * has dedicated space and can never overlap content.
+ * Fixed vertical rail on the left edge: shows which data-pipeline stage
+ * the current chapter maps to. Only rendered on wide screens where the left
+ * margin gives it dedicated space, so it never overlaps text or 3D labels.
  */
 @Component({
   selector: 'app-pipeline-rail',
@@ -27,7 +27,7 @@ import { ActiveSectionService } from '../core/services/active-section.service';
   styles: `
     :host {
       position: fixed;
-      right: 14px;
+      left: 14px;
       top: 50%;
       z-index: 20;
       transform: translateY(-50%);
@@ -73,6 +73,7 @@ import { ActiveSectionService } from '../core/services/active-section.service';
       transform: scale(1.35);
       box-shadow: 0 0 12px var(--accent-strong);
     }
+    /* Only where the left margin is wide enough to hold the rail beside the text. */
     @media (max-width: 1239px) { :host { display: none; } }
   `,
 })

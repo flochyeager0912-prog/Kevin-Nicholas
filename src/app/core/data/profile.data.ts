@@ -28,7 +28,8 @@ export const SECTIONS: readonly SectionMeta[] = [
 
 export const IDENTITY: Identity = {
   name: 'Kevin Steve Nicholas M',
-  shortName: 'Kevin',
+  brand: 'Kevin Steve Nicholas',
+  displayName: 'Kevin Steve Nicholas',
   role: 'Product Engineer',
   eyebrow: ['Product Engineer', 'Databases & Data Migration'],
   tagline: 'Intellect Design Arena · iGTB Wholesale Banking',
@@ -59,9 +60,33 @@ export const ABOUT: About = {
   ],
 };
 
+/** Chronological — the journey reads left to right, ending at the current role. */
 export const TIMELINE: readonly TimelineEntry[] = [
   {
+    kind: 'education',
+    station: 'BCA',
+    org: 'SRM Institute of Science and Technology',
+    unit: 'Kattankulathur',
+    location: 'Chennai, India',
+    title: 'Bachelor of Computer Applications',
+    period: '2019 — 2023',
+    points: [],
+  },
+  {
     kind: 'work',
+    station: 'Data Analyst Intern',
+    org: 'Intellect Design Arena Ltd.',
+    unit: 'Intellect AI · Wealth',
+    location: 'Chennai, India',
+    title: 'Data Analyst Intern',
+    period: 'Dec 2023 — Mar 2024',
+    points: [
+      'Oracle SQL and PL/SQL for relational querying, procedural database programming, data analysis and reporting.',
+    ],
+  },
+  {
+    kind: 'work',
+    station: 'Product Engineer',
     org: 'Intellect Design Arena Ltd.',
     unit: 'iGTB · Wholesale Banking',
     location: 'Chennai, India',
@@ -80,27 +105,6 @@ export const TIMELINE: readonly TimelineEntry[] = [
       'Data dictionaries covering views, functions, triggers, indexes, constraints and permissions; classified and validated PII and date columns against client specifications.',
       'Automation, unit testing, JAR versioning and OSS fix rollouts, in collaboration with database administrators and developers.',
     ],
-  },
-  {
-    kind: 'work',
-    org: 'Intellect Design Arena Ltd.',
-    unit: 'Intellect AI · Wealth',
-    location: 'Chennai, India',
-    title: 'Data Analyst Intern',
-    period: 'Dec 2023 — Mar 2024',
-    points: [
-      'Oracle SQL and PL/SQL for relational querying, procedural database programming, data analysis and reporting.',
-    ],
-  },
-  {
-    kind: 'education',
-    org: 'SRM Institute of Science and Technology',
-    unit: 'Kattankulathur',
-    location: 'Chennai, India',
-    title: 'Bachelor of Computer Applications',
-    period: '2019 — 2023',
-    facts: ['First Class', 'CGPA 6.78 / 10', 'Degree awarded Oct 2023'],
-    points: [],
   },
 ];
 
@@ -231,6 +235,7 @@ export const PROJECTS: readonly Project[] = [
     ],
     tech: ['Next.js 16', 'React 19', 'TypeScript', 'Tailwind CSS 4', 'PostgreSQL 16', 'Prisma 6', 'Zod', 'Docker'],
     repo: { label: 'flochyeager0912-prog/ARK', href: 'https://github.com/flochyeager0912-prog/ARK' },
+    live: { label: 'flochyeager0912-prog.github.io/ARK', href: 'https://flochyeager0912-prog.github.io/ARK/' },
   },
 ];
 

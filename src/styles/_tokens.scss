@@ -54,6 +54,7 @@
 
   // Layout
   --container: 1120px;
+  --column: 500px; // text column width in the split (text + 3D) layout
   --gutter: clamp(16px, 4vw, 40px);
   --header-h: 64px;
 

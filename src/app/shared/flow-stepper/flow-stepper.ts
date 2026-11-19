@@ -7,17 +7,18 @@ import {
   computed,
   inject,
   input,
-  signal,
+  model,
 } from '@angular/core';
 import { FlowStep } from '../../core/models/profile.model';
 import { MotionService } from '../../core/services/motion.service';
+import { handleTablistKey } from '../roving';
 
 const AUTO_ADVANCE_MS = 3600;
 
 /**
- * Horizontal pipeline of numbered steps. Auto-advances while visible
- * (unless reduced motion is requested) and hands control to the user on first interaction.
- * Implements the WAI-ARIA tabs pattern, including arrow-key navigation.
+ * Horizontal pipeline of numbered steps, two-way bound through `index`
+ * (the same index drives the 3D pipeline nodes).
+ * Auto-advances while visible until anything else changes the selection.
  */
 @Component({
   selector: 'app-flow-stepper',
@@ -29,8 +30,8 @@ export class FlowStepper {
   readonly steps = input.required<readonly FlowStep[]>();
   readonly title = input.required<string>();
   readonly uid = input.required<string>();
+  readonly index = model(0);
 
-  protected readonly index = signal(0);
   protected readonly active = computed(() => this.steps()[this.index()]);
   protected readonly progress = computed(() => {
     const n = this.steps().length;
@@ -39,21 +40,17 @@ export class FlowStepper {
 
   private readonly host = inject<ElementRef<HTMLElement>>(ElementRef).nativeElement;
   private readonly motion = inject(MotionService);
-  private userTookControl = false;
+  private autoplay = true;
+  private lastAuto = -1;
   private inView = false;
 
   constructor() {
     const destroyRef = inject(DestroyRef);
-
     afterNextRender(() => {
+      this.lastAuto = this.index();
       const io = new IntersectionObserver(([e]) => (this.inView = !!e?.isIntersecting), { threshold: 0.35 });
       io.observe(this.host);
-
-      const timer = window.setInterval(() => {
-        if (this.userTookControl || !this.inView || document.hidden || this.motion.reducedMotion()) return;
-        this.index.update((i) => (i + 1) % this.steps().length);
-      }, AUTO_ADVANCE_MS);
-
+      const timer = window.setInterval(() => this.advance(), AUTO_ADVANCE_MS);
       destroyRef.onDestroy(() => {
         io.disconnect();
         window.clearInterval(timer);
@@ -61,27 +58,26 @@ export class FlowStepper {
     });
   }
 
-  protected select(i: number, focus = false): void {
-    this.userTookControl = true;
+  private advance(): void {
+    // Any change not made by autoplay (click, keyboard, 3D scene) hands control to the user.
+    if (this.index() !== this.lastAuto) this.autoplay = false;
+    if (!this.autoplay || !this.inView || document.hidden || this.motion.reducedMotion()) return;
+    this.lastAuto = (this.index() + 1) % this.steps().length;
+    this.index.set(this.lastAuto);
+  }
+
+  protected select(i: number): void {
+    this.autoplay = false;
     this.index.set(i);
-    if (focus) {
-      this.host.querySelector<HTMLButtonElement>(`#${this.uid()}-tab-${i}`)?.focus();
-    }
   }
 
   protected onKeydown(event: KeyboardEvent): void {
-    const n = this.steps().length;
-    const moves: Record<string, number> = {
-      ArrowRight: (this.index() + 1) % n,
-      ArrowDown: (this.index() + 1) % n,
-      ArrowLeft: (this.index() - 1 + n) % n,
-      ArrowUp: (this.index() - 1 + n) % n,
-      Home: 0,
-      End: n - 1,
-    };
-    const next = moves[event.key];
-    if (next === undefined) return;
-    event.preventDefault();
-    this.select(next, true);
+    handleTablistKey(
+      event,
+      this.index(),
+      this.steps().length,
+      (i) => this.select(i),
+      (i) => `${this.uid()}-tab-${i}`,
+    );
   }
 }

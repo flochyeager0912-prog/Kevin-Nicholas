@@ -1,97 +1,51 @@
-.grid {
-  display: grid;
-  grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
-  gap: var(--space-6);
-  align-items: start;
-}
-
-.about {
-  position: sticky;
-  top: calc(var(--header-h) + var(--space-5));
-}
-
 .para {
-  margin-top: var(--space-4);
+  margin-top: var(--space-3);
   font-size: 1.0625rem;
 
   &:first-of-type {
-    margin-top: var(--space-5);
+    margin-top: var(--space-4);
   }
 }
 
-// ---------- Timeline ----------
-
-.timeline {
-  position: relative;
-  display: grid;
-  gap: var(--space-5);
-  padding-left: 28px;
-
-  // Vertical spine connecting the entries.
-  &::before {
-    content: '';
-    position: absolute;
-    top: 28px;
-    bottom: 28px;
-    left: 6px;
-    width: 2px;
-    border-radius: 2px;
-    background: linear-gradient(180deg, var(--accent-strong), var(--line) 85%);
-  }
+.list-title {
+  margin: var(--space-6) 0 var(--space-2);
 }
 
-.entry {
-  padding: var(--space-5) var(--space-6);
+.now {
+  display: inline-block;
+  margin-left: var(--space-2);
+  padding: 1px var(--space-2);
+  border-radius: var(--radius-pill);
+  background: var(--accent-soft);
+  color: var(--accent);
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  font-weight: 500;
+  vertical-align: 2px;
 }
 
-.node {
-  position: absolute;
-  top: 30px;
-  left: -28px;
-  width: 14px;
-  height: 14px;
-  border-radius: 50%;
-  border: 2px solid var(--accent);
-  background: var(--bg);
-  box-shadow: 0 0 0 4px rgba(155, 107, 255, 0.15);
+.option {
+  grid-template-columns: 9.5rem minmax(0, 1fr);
 }
 
-.is-education .node {
-  border-color: var(--text-3);
-  box-shadow: none;
-}
-
-.entry-head {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: space-between;
-  gap: var(--space-2) var(--space-4);
-}
-
-.kind {
+.option-key {
   font-size: 0.6875rem;
 }
 
-.period {
-  padding: var(--space-1) var(--space-3);
-  border: 1px solid var(--line);
-  border-radius: var(--radius-pill);
-  color: var(--text-2);
-  font-family: var(--font-mono);
-  font-size: 0.75rem;
-  white-space: nowrap;
-
-  &.is-current {
-    border-color: var(--accent-strong);
-    background: var(--accent-soft);
-    color: var(--text-1);
+@media (max-width: 420px) {
+  .option {
+    grid-template-columns: minmax(0, 1fr);
+    row-gap: 2px;
   }
 }
 
+.detail {
+  margin-top: var(--space-4);
+}
+
 .title {
-  margin-top: var(--space-3);
-  font-size: 1.5rem;
+  margin-top: var(--space-2);
+  font-size: 1.375rem;
   line-height: 1.25;
 }
 
@@ -110,38 +64,30 @@
 .progression {
   display: flex;
   flex-wrap: wrap;
-  gap: var(--space-2);
-  margin-top: var(--space-4);
+  align-items: center;
+  gap: var(--space-2) var(--space-5);
+  margin-top: var(--space-3);
 
   li {
+    position: relative;
     display: inline-flex;
     flex-direction: column;
-    padding: var(--space-2) var(--space-3);
-    border: 1px solid var(--line);
-    border-radius: var(--radius-md);
-    background: var(--surface-2);
     line-height: 1.35;
-
-    &.is-now {
-      border-color: var(--accent-strong);
-    }
   }
 
-  li + li {
-    position: relative;
-    margin-left: var(--space-4);
+  li + li::before {
+    content: '→';
+    position: absolute;
+    left: calc(-1 * var(--space-5));
+    top: 50%;
+    width: var(--space-5);
+    transform: translateY(-50%);
+    color: var(--text-3);
+    text-align: center;
+  }
 
-    &::before {
-      content: '→';
-      position: absolute;
-      left: calc(-1 * var(--space-4) - 2px);
-      top: 50%;
-      width: var(--space-4);
-      transform: translateY(-50%);
-      color: var(--text-3);
-      text-align: center;
-      font-size: 0.8125rem;
-    }
+  .is-now .p-title {
+    color: var(--accent);
   }
 }
 
@@ -157,10 +103,6 @@
   font-size: 0.6875rem;
 }
 
-.facts {
-  margin-top: var(--space-4);
-}
-
 .points {
   display: grid;
   gap: var(--space-2);
@@ -172,7 +114,7 @@
     position: relative;
     padding-left: var(--space-5);
     color: var(--text-2);
-    font-size: 0.96875rem;
+    font-size: 0.9375rem;
     line-height: 1.6;
 
     &::before {
@@ -189,52 +131,22 @@
   }
 }
 
-@media (max-width: 960px) {
-  .grid {
-    grid-template-columns: minmax(0, 1fr);
-  }
-
-  .about {
-    position: static;
-  }
-}
-
+// Narrow screens: progression reads top-to-bottom so no arrow is stranded on a line.
 @media (max-width: 560px) {
-  .entry {
-    padding: var(--space-5);
-  }
-
-  .timeline {
-    padding-left: 22px;
-  }
-
-  .node {
-    left: -22px;
-  }
-
   .progression {
     flex-direction: column;
-    align-items: stretch;
+    align-items: flex-start;
     gap: var(--space-4);
 
-    li + li {
-      margin-left: 0;
-
-      &::before {
-        content: '↓';
-        left: 0;
-        right: 0;
-        top: calc(-1 * var(--space-4));
-        width: auto;
-        height: var(--space-4);
-        transform: none;
-        line-height: var(--space-4);
-        font-size: 0.75rem;
-      }
+    li + li::before {
+      content: '↓';
+      left: 0;
+      top: calc(-1 * var(--space-4));
+      width: auto;
+      height: var(--space-4);
+      transform: none;
+      line-height: var(--space-4);
+      font-size: 0.75rem;
     }
-  }
-
-  .timeline::before {
-    left: 6px;
   }
 }

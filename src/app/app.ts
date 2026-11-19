@@ -31,7 +31,8 @@ import { Work } from './sections/work/work';
     <app-pipeline-rail />
   `,
   styles: `
-    .main { position: relative; z-index: 1; }
+    /* Content sits above the 3D stage; empty areas pass the pointer through to it. */
+    .main { position: relative; z-index: 1; pointer-events: none; }
     app-site-footer { position: relative; z-index: 1; display: block; }
   `,
 })
