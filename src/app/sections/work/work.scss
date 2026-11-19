@@ -1,0 +1,121 @@
+.intro {
+  max-width: 720px;
+  padding: var(--space-5) var(--space-6);
+}
+
+.projects {
+  display: grid;
+  gap: var(--space-6);
+  margin-top: var(--space-6);
+}
+
+.head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-3) var(--space-5);
+  padding-bottom: var(--space-5);
+  border-bottom: 1px solid var(--line);
+}
+
+.kicker {
+  color: var(--accent);
+}
+
+.name {
+  margin-top: var(--space-2);
+  font-size: clamp(1.5rem, 1.1rem + 1.4vw, 2rem);
+  line-height: 1.2;
+}
+
+.period {
+  padding: var(--space-1) var(--space-3);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-pill);
+  color: var(--text-2);
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  white-space: nowrap;
+}
+
+.body {
+  display: grid;
+  grid-template-columns: minmax(0, 1.55fr) minmax(0, 1fr);
+  gap: var(--space-6);
+  margin-top: var(--space-5);
+}
+
+.summary {
+  color: var(--text-1);
+  font-size: 1.0625rem;
+  line-height: 1.6;
+}
+
+.flow {
+  margin-top: var(--space-6);
+}
+
+.side {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+  padding-left: var(--space-6);
+  border-left: 1px solid var(--line);
+}
+
+.highlights {
+  display: grid;
+  gap: var(--space-4);
+}
+
+.hl dd {
+  margin: var(--space-1) 0 0;
+  color: var(--text-2);
+  font-size: 0.9375rem;
+  line-height: 1.55;
+}
+
+.tech .tag-list {
+  margin-top: var(--space-2);
+}
+
+.repo {
+  justify-content: flex-start;
+  width: 100%;
+  margin-top: auto;
+  font-size: 0.8125rem;
+
+  white-space: normal;
+  min-height: 48px;
+  padding-block: var(--space-2);
+  border-radius: var(--radius-md);
+
+  .repo-label {
+    flex: 1;
+    min-width: 0;
+    line-height: 1.35;
+    overflow-wrap: anywhere;
+    font-family: var(--font-mono);
+    font-weight: 500;
+  }
+}
+
+@media (max-width: 960px) {
+  .body {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .side {
+    padding-left: 0;
+    padding-top: var(--space-5);
+    border-left: 0;
+    border-top: 1px solid var(--line);
+  }
+}
+
+@media (max-width: 560px) {
+  .intro {
+    padding: var(--space-5);
+  }
+}

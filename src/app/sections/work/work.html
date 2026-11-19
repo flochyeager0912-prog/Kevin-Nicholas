@@ -1,0 +1,59 @@
+<section id="work" class="section" aria-labelledby="work-title">
+  <div class="container">
+    <div class="card intro" appReveal>
+      <app-section-heading
+        [eyebrow]="copy.eyebrow"
+        [heading]="copy.heading"
+        [lead]="copy.lead"
+        headingId="work-title"
+      />
+    </div>
+
+    <div class="projects">
+      @for (project of projects; track project.id) {
+        <article class="card card-pad project" [attr.aria-labelledby]="project.id + '-name'" appReveal>
+          <header class="head">
+            <div>
+              <p class="mono-label kicker">{{ project.kicker }}</p>
+              <h3 class="name" [id]="project.id + '-name'">{{ project.name }}</h3>
+            </div>
+            <span class="period">{{ project.period }}</span>
+          </header>
+
+          <div class="body">
+            <div class="main">
+              <p class="summary">{{ project.summary }}</p>
+              <app-flow-stepper class="flow" [steps]="project.flow" [title]="project.flowTitle" [uid]="project.id" />
+            </div>
+
+            <aside class="side" [attr.aria-label]="project.name + ' details'">
+              <dl class="highlights">
+                @for (h of project.highlights; track h.label) {
+                  <div class="hl">
+                    <dt class="mono-label">{{ h.label }}</dt>
+                    <dd>{{ h.text }}</dd>
+                  </div>
+                }
+              </dl>
+
+              <div class="tech">
+                <p class="mono-label">Built with</p>
+                <ul class="tag-list">
+                  @for (t of project.tech; track t) {
+                    <li class="tag">{{ t }}</li>
+                  }
+                </ul>
+              </div>
+
+              <a class="btn repo" [href]="project.repo.href" target="_blank" rel="noopener noreferrer">
+                <app-icon name="github" />
+                <span class="repo-label">{{ project.repo.label }}</span>
+                <app-icon name="external" />
+              </a>
+            </aside>
+          </div>
+        </article>
+      }
+    </div>
+  </div>
+</section>

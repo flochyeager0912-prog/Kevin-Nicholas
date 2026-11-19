@@ -1,0 +1,47 @@
+<section id="contact" class="section" aria-labelledby="contact-title">
+  <div class="container">
+    <div class="card card-pad" appReveal>
+      <app-section-heading
+        [eyebrow]="copy.eyebrow"
+        [heading]="copy.heading"
+        [lead]="copy.lead"
+        headingId="contact-title"
+      />
+
+      <ul class="channels" role="list">
+        @for (c of channels; track c.label) {
+          <li class="channel">
+            <a
+              class="channel-link"
+              [href]="c.href"
+              [attr.target]="c.external ? '_blank' : null"
+              [attr.rel]="c.external ? 'noopener noreferrer' : null"
+            >
+              <span class="channel-icon"><app-icon [name]="iconFor(c)" /></span>
+              <span class="channel-text">
+                <span class="mono-label">{{ c.label }}</span>
+                <span class="channel-value">{{ c.value }}</span>
+              </span>
+            </a>
+            @if (c.copyable) {
+              <button
+                type="button"
+                class="copy"
+                [attr.aria-label]="'Copy ' + c.label.toLowerCase()"
+                (click)="copyValue(c)"
+              >
+                <app-icon [name]="copied() === c.label ? 'check' : 'copy'" />
+              </button>
+            }
+          </li>
+        }
+      </ul>
+
+      <p class="location">
+        <app-icon name="pin" />
+        <span>Based in {{ location }}</span>
+      </p>
+      <p class="visually-hidden" aria-live="polite">{{ copied() ? copied() + ' copied to clipboard' : '' }}</p>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,58 @@
+<section id="journey" class="section" aria-labelledby="journey-title">
+  <div class="container grid">
+    <div class="card card-pad about" appReveal>
+      <app-section-heading [eyebrow]="about.eyebrow" [heading]="about.heading" headingId="journey-title" />
+      @for (p of about.paragraphs; track $index) {
+        <p class="para">{{ p }}</p>
+      }
+    </div>
+
+    <ol class="timeline" role="list" aria-label="Experience and education">
+      @for (entry of timeline; track entry.title; let i = $index) {
+        <li class="card entry" [class.is-education]="entry.kind === 'education'" [appReveal]="i * 90">
+          <span class="node" aria-hidden="true"></span>
+
+          <div class="entry-head">
+            <p class="mono-label kind">{{ entry.kind === 'education' ? 'Education' : 'Experience' }}</p>
+            <span class="period" [class.is-current]="entry.current">{{ entry.period }}</span>
+          </div>
+
+          <h3 class="title">{{ entry.title }}</h3>
+          <p class="org">
+            {{ entry.org }}
+            @if (entry.unit) {
+              <span class="unit">· {{ entry.unit }}</span>
+            }
+          </p>
+
+          @if (entry.progression?.length) {
+            <ol class="progression" role="list" aria-label="Role progression">
+              @for (step of entry.progression; track step.title; let last = $last) {
+                <li [class.is-now]="last">
+                  <span class="p-title">{{ step.title }}</span>
+                  <span class="p-period">{{ step.period }}</span>
+                </li>
+              }
+            </ol>
+          }
+
+          @if (entry.facts?.length) {
+            <ul class="tag-list facts">
+              @for (fact of entry.facts; track fact) {
+                <li class="tag">{{ fact }}</li>
+              }
+            </ul>
+          }
+
+          @if (entry.points.length) {
+            <ul class="points">
+              @for (point of entry.points; track $index) {
+                <li>{{ point }}</li>
+              }
+            </ul>
+          }
+        </li>
+      }
+    </ol>
+  </div>
+</section>

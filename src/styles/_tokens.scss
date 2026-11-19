@@ -1,0 +1,62 @@
+// Design tokens — the only place colours, type, spacing and motion are defined.
+// Text colours are verified for WCAG AA contrast against the card surfaces.
+
+:root {
+  color-scheme: dark;
+
+  // Surfaces
+  --bg: #0a0614;
+  --bg-elevated: #160e28;
+  --surface: rgba(20, 12, 38, 0.84);
+  --surface-2: rgba(38, 24, 68, 0.55);
+  --surface-hover: rgba(52, 33, 92, 0.6);
+  --line: rgba(196, 170, 255, 0.14);
+  --line-strong: rgba(196, 170, 255, 0.3);
+
+  // Text (contrast on --surface: text-1 ≈ 17:1, text-2 ≈ 11:1, text-3 ≈ 6.4:1)
+  --text-1: #f5f1ff;
+  --text-2: #d3c9f0;
+  --text-3: #a99bd4;
+
+  // Purple accents
+  --accent: #c4a8ff;
+  --accent-strong: #9b6bff;
+  --accent-deep: #6d3fe0;
+  --accent-soft: rgba(155, 107, 255, 0.16);
+  --on-accent: #14082a;
+
+  --grad-name: linear-gradient(100deg, #f5f1ff 0%, #d9c8ff 38%, #a87bff 100%);
+  --grad-button: linear-gradient(110deg, #d9c8ff 0%, #b18cff 55%, #9b6bff 100%);
+
+  // Type
+  --font-display: 'Fraunces', 'Iowan Old Style', Georgia, serif;
+  --font-body: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, 'SFMono-Regular', Menlo, monospace;
+
+  // Spacing (4px scale)
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.5rem;
+  --space-6: 2rem;
+  --space-7: 3rem;
+  --space-8: 4.5rem;
+  --space-9: 7rem;
+
+  // Shape & depth
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 20px;
+  --radius-pill: 999px;
+  --shadow-card: 0 1px 0 rgba(255, 255, 255, 0.04) inset, 0 24px 60px -24px rgba(5, 2, 14, 0.85);
+  --focus-ring: 0 0 0 2px var(--bg), 0 0 0 4px var(--accent);
+
+  // Layout
+  --container: 1120px;
+  --gutter: clamp(16px, 4vw, 40px);
+  --header-h: 64px;
+
+  // Motion
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+}

@@ -1,0 +1,42 @@
+<header class="header">
+  <div class="container bar">
+    <a class="brand" href="#hero" (click)="menuOpen.set(false)">
+      <span class="pulse" aria-hidden="true"></span>
+      <span>{{ identity.shortName }}</span>
+      <span class="visually-hidden">— back to top</span>
+    </a>
+
+    <nav id="site-nav" class="nav" [class.is-open]="menuOpen()" aria-label="Primary">
+      <ul role="list">
+        @for (link of links; track link.id) {
+          <li>
+            <a
+              [href]="'#' + link.id"
+              [class.is-active]="active() === link.id"
+              [attr.aria-current]="active() === link.id ? 'true' : null"
+              (click)="menuOpen.set(false)"
+              >{{ link.nav }}</a
+            >
+          </li>
+        }
+      </ul>
+    </nav>
+
+    <div class="actions">
+      <a class="btn btn-sm" [href]="identity.github.href" target="_blank" rel="noopener noreferrer">
+        <app-icon name="github" />
+        <span>GitHub</span>
+      </a>
+      <button
+        type="button"
+        class="menu-toggle"
+        aria-controls="site-nav"
+        [attr.aria-expanded]="menuOpen()"
+        [attr.aria-label]="menuOpen() ? 'Close menu' : 'Open menu'"
+        (click)="menuOpen.update((v) => !v)"
+      >
+        <app-icon [name]="menuOpen() ? 'close' : 'menu'" />
+      </button>
+    </div>
+  </div>
+</header>

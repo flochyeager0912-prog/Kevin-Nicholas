@@ -1,0 +1,50 @@
+<section id="hero" class="hero" aria-labelledby="hero-name">
+  <div class="container layout">
+    <div class="card card-pad intro">
+      <p class="eyebrow">
+        @for (part of identity.eyebrow; track part; let last = $last) {
+          <span>{{ part }}</span>
+          @if (!last) {
+            <span class="sep" aria-hidden="true">·</span>
+          }
+        }
+      </p>
+
+      <h1 id="hero-name" class="name">{{ identity.name }}</h1>
+
+      <p class="role">{{ identity.role }}</p>
+      <p class="tagline">{{ identity.tagline }}</p>
+      <p class="summary">{{ identity.summary }}</p>
+
+      <div class="cta">
+        <a class="btn btn-primary" href="#work">
+          Explore my work
+          <app-icon name="arrowDown" />
+        </a>
+        <a class="btn" [href]="identity.cv.href" target="_blank" rel="noopener">
+          <app-icon name="file" />
+          View CV
+        </a>
+      </div>
+
+      <ul class="meta" role="list">
+        <li>
+          <app-icon name="pin" />
+          <span>{{ identity.location }}</span>
+        </li>
+        <li>
+          <a class="text-link" [href]="identity.github.href" target="_blank" rel="noopener noreferrer">
+            <app-icon name="github" /> GitHub
+          </a>
+        </li>
+        <li>
+          <a class="text-link" [href]="identity.linkedin.href" target="_blank" rel="noopener noreferrer">
+            <app-icon name="linkedin" /> LinkedIn
+          </a>
+        </li>
+      </ul>
+
+      <p class="hint mono-label" aria-hidden="true">Scroll — follow the data</p>
+    </div>
+  </div>
+</section>

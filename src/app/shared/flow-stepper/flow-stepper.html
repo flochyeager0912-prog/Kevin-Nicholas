@@ -1,0 +1,38 @@
+<p class="flow-title mono-label">{{ title() }}</p>
+
+<div class="track" role="tablist" [attr.aria-label]="title()" (keydown)="onKeydown($event)">
+  <span class="rail" aria-hidden="true">
+    <span class="rail-fill" [style.transform]="'scaleX(' + progress() + ')'"></span>
+  </span>
+
+  @for (step of steps(); track step.label; let i = $index) {
+    <button
+      type="button"
+      role="tab"
+      class="step"
+      [id]="uid() + '-tab-' + i"
+      [class.is-active]="i === index()"
+      [class.is-done]="i < index()"
+      [attr.aria-selected]="i === index()"
+      [attr.aria-controls]="uid() + '-panel'"
+      [attr.tabindex]="i === index() ? 0 : -1"
+      (click)="select(i)"
+    >
+      <span class="num">{{ i + 1 }}</span>
+      <span class="label">{{ step.label }}</span>
+    </button>
+  }
+</div>
+
+<div
+  class="panel"
+  role="tabpanel"
+  [id]="uid() + '-panel'"
+  [attr.aria-labelledby]="uid() + '-tab-' + index()"
+  aria-live="polite"
+>
+  @if (active(); as step) {
+    <p class="panel-label">{{ step.label }}</p>
+    <p class="panel-detail">{{ step.detail }}</p>
+  }
+</div>
